@@ -1,0 +1,5 @@
+function showAd(id){
+    $.ajax{
+
+    }
+}
