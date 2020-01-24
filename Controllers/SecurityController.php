@@ -65,7 +65,8 @@ class SecurityController extends AppController
                 return;
             }
             $userRepository = new UserRepository();
-            $userRepository->addUser($_POST['name'], $_POST['email'],$_POST['password']);
+            $password=md5($_POST['password']);
+            $userRepository->addUser($_POST['name'], $_POST['email'],$password);
             $user=$userRepository->getUser($_POST['email']);
             $permission=$userRepository->getPermission($user->getId());
             $_SESSION['id']=$_POST['email'];

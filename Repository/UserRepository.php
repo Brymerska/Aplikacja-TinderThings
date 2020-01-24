@@ -48,7 +48,6 @@ class UserRepository extends Repository {
 
     public function addUser(string $name, string $email, string $password)
     {
-        $password=md5($password);
         $con=$this->database->connect();
         $stmt=$con->prepare("INSERT INTO users VALUES(NULL,'$name','$email','$password')");
         $stmt->execute();

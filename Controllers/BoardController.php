@@ -70,5 +70,13 @@ class BoardController extends AppController
             'ads'=> $ads
         ]);
     }
-
+    public function showAdOne()
+    {
+        $idAd=$_GET['id'];
+        $adRepository = new AdRepository();
+        $ad=$adRepository->getAd($idAd);
+        header('Content-type: application/json');
+        http_response_code(200);
+        echo json_encode($ad);
+    }
 }
