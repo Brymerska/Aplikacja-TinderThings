@@ -13,11 +13,11 @@ class BoardController extends AppController
         $userRepository = new UserRepository();
         $users = $userRepository->getUsers();
         $adRepository = new AdRepository();
-        $category=$adRepository->getCategory();
-        $city=$adRepository->getCity();
+        $category = $adRepository->getCategory();
+        $city = $adRepository->getCity();
         $this->render('board', [
             'users' => $users,
-            'category'=> $category,
+            'category' => $category,
             'city' => $city
         ]);
     }
@@ -25,7 +25,7 @@ class BoardController extends AppController
     public function addAd()
     {
         if ($this->isPost()) {
-            if ($_POST['name'] == "" || $_POST['description'] == ""){
+            if ($_POST['name'] == "" || $_POST['description'] == "") {
                 $this->render('board', ['messages' => ['uzupelnij wszystkie pola']]);
                 return;
             }
@@ -37,19 +37,19 @@ class BoardController extends AppController
             //echo "DESC: ".$_POST['description'] . "\n";
             //echo $_POST['city'] . "\n";
             //echo $_POST['category'] . "\n";
-            $namefile=basename($_FILES["img"]["name"]);
+            $namefile = basename($_FILES["img"]["name"]);
             //echo $namefile;
             move_uploaded_file($_FILES['img']['tmp_name'], $target_file);
-            $userRepository= new UserRepository();
-            $user=$userRepository->getUser($_SESSION['id']);
+            $userRepository = new UserRepository();
+            $user = $userRepository->getUser($_SESSION['id']);
             $adRepository = new AdRepository();
-            $category=$adRepository->getCategory();
-            $city=$adRepository->getCity();
-            $adRepository->addAd($_POST['name'],$_POST['description'],$namefile,$_POST['city'],$_POST['category'],$user->getId());
+            $category = $adRepository->getCategory();
+            $city = $adRepository->getCity();
+            $adRepository->addAd($_POST['name'], $_POST['description'], $namefile, $_POST['city'], $_POST['category'], $user->getId());
             $this->render('board', [
-                'messages' => ['Pomyslnie dodano zgloszenie'],
+                'messages' => ['Pomyślnie dodano zgłoszenie'],
                 'users' => $user,
-                'category'=> $category,
+                'category' => $category,
                 'city' => $city]);
             return;
         }
@@ -64,19 +64,37 @@ class BoardController extends AppController
         $userRepository = new UserRepository();
         $users = $userRepository->getUsers();
         $adRepository = new AdRepository();
-        $ads=$adRepository->getAds();
+        $ads = $adRepository->getAds();
         $this->render('ad', [
             'user' => $users,
-            'ads'=> $ads
+            'ads' => $ads
         ]);
     }
+
     public function showAdOne()
     {
-        $idAd=$_GET['id'];
+        $idAd = $_GET['id'];
         $adRepository = new AdRepository();
-        $ad=$adRepository->getAd($idAd);
+        $ad = $adRepository->getAd($idAd);
         header('Content-type: application/json');
         http_response_code(200);
         echo json_encode($ad);
+    }
+
+    public function buyAd()
+    {
+        $idAd = $_GET['id'];
+        $adRepository = new AdRepository();
+        $userRepository = new UserRepository();
+        $user= $userRepository->getUser($_SESSION['id']);
+        $ad = $adRepository->buyAd($idAd, $user->getId());
+        if($ad==true){
+            $res=['result'=>"Zabrano"];
+        }else{
+            $res=['result'=>"Przedmiot zajety"];
+        }
+        header('Content-type: application/json');
+        http_response_code(200);
+        echo json_encode($res);
     }
 }

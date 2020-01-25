@@ -45,7 +45,8 @@ class AdRepository extends Repository
                                                a.namefile,
                                                c.name as city,
                                                ca.name as category,
-                                               u.name as username
+                                               u.name as username,
+                                               a.available
                                         FROM ad a,category ca, city c, users u
                                         WHERE a.idcategory=ca.idcategory AND
                                               a.idcity=c.idcity AND
@@ -54,4 +55,30 @@ class AdRepository extends Repository
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+    public function buyAd(int $idAd, int $idUser)
+    {
+        $con = $this->database->connect();
+        $con->beginTransaction();
+        try {
+            $res = $this->getAd($idAd);
+            var_dump($res);
+            if ($res['available'] == 0) {
+                throw new Exception("Ktos juz wzial towar");
+            }
+            $stmt = $con->prepare("UPDATE ad SET available=0 WHERE idad='$idAd'");
+            $stmt->execute();
+            $stmt = $con->prepare("INSERT INTO userad VALUES(NULL,'$idAd','$idUser') ");
+            $stmt->execute();
+
+            $con->commit();
+        } catch (Exception $e) {
+            echo $e->getMessage();
+            $con->rollBack();
+
+
+        }
+        return "Pomyślnie zabrano";
+    }
+
 }

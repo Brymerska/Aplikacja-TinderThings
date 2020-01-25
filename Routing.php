@@ -2,6 +2,7 @@
 
 require_once 'Controllers/SecurityController.php';
 require_once 'Controllers/BoardController.php';
+require_once 'Controllers/AdminController.php';
 
 class Routing
 {
@@ -43,6 +44,15 @@ class Routing
             'showAdOne' => [
                 'controller' => 'BoardController',
                 'action' => 'showAdOne'
+            ],
+            'buyAd' => [
+                'controller' => 'BoardController',
+                'action' => 'buyAd'
+            ],
+
+            'admin' => [
+                'controller' => 'AdminController',
+                'action' => 'index'
             ]
         ];
     }

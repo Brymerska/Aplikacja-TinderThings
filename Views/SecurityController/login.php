@@ -21,7 +21,7 @@ if(isset($_SESSION['id']) and isset($_SESSION['role'])) {
 <div class="container">
     <div class="logo">
         <br/><br/>
-        <img width="200" height="200" src="uploads/loggo.png"
+        <img width="700" height="300" src="uploads/loggo.png"
     </div>
     <form action="?page=login" method="POST">
         <div class="messages">
@@ -33,11 +33,17 @@ if(isset($_SESSION['id']) and isset($_SESSION['role'])) {
                 }
             ?>
         </div>
-        <input name="email" type="text" placeholder="email@email.com">
-        <input name="password" type="password" placeholder="password">
-        <button type="submit">CONTINUE</button>
+        <br/><br/>
+        <span style="color: black"> <input name="email" type="text" placeholder="email@email.com">
+            <br><br/>
+        <span style="color: black"> <input name="password" type="password" placeholder="password">
+              <br><br/>  <button type="submit">Zaloguj się </button>
+        <HR>
     </form>
-    Nie masz konta? <a href="?page=register">Zarejestruj się</a>
+    <div class = "napis">
+        <span style="color: white">Nie masz konta?<BR>
+        <a href="?page=register">Zarejestruj się</a>
+    </div>
 </div>
 </body>
 </html>
